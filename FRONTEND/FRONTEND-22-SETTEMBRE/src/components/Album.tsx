@@ -12,7 +12,6 @@ function Scattino({ scatto, index }: { scatto: Scatto; index: number }) {
     transition={{ duration: .55, delay: Math.min(index, 3) * .08, ease: [.22, 1, .36, 1] }}>
     <div className="scatto-media">
       <img src={scatto.file} alt={scatto.alt} loading="lazy" />
-      <span className="scatto-grana" aria-hidden="true" />
     </div>
     <figcaption>
       <span className="scatto-luogo">{scatto.luogo}</span>
@@ -69,7 +68,6 @@ export function Nastro() {
         transition={{ duration: .5, delay: Math.min(i, 4) * .07 }}>
         <div className="tassello-media">
           <img src={tassello.file} alt={tassello.alt} loading="lazy" />
-          <span className="scatto-grana" aria-hidden="true" />
         </div>
         <figcaption>{tassello.didascalia}</figcaption>
       </motion.figure>)}

@@ -30,7 +30,6 @@ export function ScegliLeggenda() {
         <Link to={`/leggenda/${l.slug}`} className="carta-leggenda">
           <div className="carta-media">
             <img src={l.ritratto} alt={`${l.nome} negli anni Duemila`} fetchPriority={i === 0 ? 'high' : undefined} />
-            <span className="scatto-grana" aria-hidden="true" />
             <span className="carta-numero" aria-hidden="true">{l.numero}</span>
           </div>
           <div className="carta-testo">
@@ -85,14 +84,13 @@ export function LeggendaPagina() {
   </section>
 
   return <section className={`leggenda leggenda-${leggenda.slug}`}>
-    <SfondoLeggenda video={leggenda.video} ritratto={leggenda.ritratto} />
+    <SfondoLeggenda video={leggenda.videoSfondo ?? leggenda.video} ritratto={leggenda.ritratto} />
 
     <Link to="/" className="leggenda-indietro underlined-link"><ArrowLeft size={15} /> Cambia leggenda</Link>
 
     <div className="leggenda-testa">
       <div className="leggenda-ritratto">
         <img src={leggenda.ritratto} alt={`${leggenda.nome} negli anni Duemila`} />
-        <span className="scatto-grana" aria-hidden="true" />
         <img className="leggenda-fermo" src={leggenda.video ?? leggenda.fermo} alt="" aria-hidden="true" />
       </div>
       <div className="leggenda-copy">

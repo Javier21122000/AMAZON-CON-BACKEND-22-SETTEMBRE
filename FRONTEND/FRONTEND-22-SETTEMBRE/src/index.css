@@ -279,7 +279,6 @@ h1, h2, h3, p { margin: 0; }
 .scatto-media img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .8s cubic-bezier(.22, 1, .36, 1); }
 .scatto:hover .scatto-media img { transform: scale(1.035); }
 /* Grana sopra la foto: la pellicola non era mai pulita. */
-.scatto-grana { position: absolute; inset: 0; pointer-events: none; opacity: .2; mix-blend-mode: overlay; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E"); }
 .scatto figcaption { padding: 17px 2px 0; }
 .scatto-luogo { display: block; font-style: italic; font-size: 11px; letter-spacing: .06em; color: #85827a; }
 .scatto figcaption h3 { font-family: var(--font-display); font-size: 25px; font-weight: 600; letter-spacing: -.015em; line-height: 1.08; margin: 7px 0 9px; text-transform: uppercase; }
@@ -332,7 +331,6 @@ h1, h2, h3, p { margin: 0; }
 body {
   background-color: #f2f0eb;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='linear' slope='.055'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23p)'/%3E%3C/svg%3E");
-  background-attachment: fixed;
 }
 
 /* ---- Il nastro: riferimenti visivi, nessuna storia ---- */
@@ -429,7 +427,10 @@ body {
 .leggenda-sfondo video, .leggenda-sfondo img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .leggenda-sfondo-fermo { animation: carrellata 30s ease-in-out infinite alternate; will-change: transform; }
 @keyframes carrellata { from { transform: scale(1.06) translate3d(0, 0, 0); } to { transform: scale(1.17) translate3d(-1.6%, -2.2%, 0); } }
-.leggenda-sfondo video, .leggenda-sfondo img { filter: blur(2.5px) saturate(.88); transform: scale(1.06); }
+/* Nessun filter: sfocatura e desaturazione sono incorporate nel file
+   (scripts/converti_clip.py). Come filtro CSS su un'immagine animata
+   verrebbero ricalcolate a ogni fotogramma. */
+.leggenda-sfondo video, .leggenda-sfondo img { transform: scale(1.04); }
 /* Il velo scala da leggero a pieno: in alto la clip si vede, piu' in basso
    copre del tutto perche' li' ci sono i paragrafi. */
 .leggenda-sfondo-velo { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(242,240,235,.70) 0%, rgba(242,240,235,.90) 44%, rgba(242,240,235,1) 84%); }
@@ -437,7 +438,6 @@ body {
 .leggenda-testa { display: grid; grid-template-columns: minmax(0, .82fr) minmax(0, 1fr); gap: 52px; align-items: start; margin-bottom: 64px; }
 .leggenda-ritratto { position: relative; border-radius: 18px; overflow: visible; }
 .leggenda-ritratto > img:first-child { width: 100%; display: block; border-radius: 18px; box-shadow: 0 24px 46px -30px rgba(28, 22, 14, .9); }
-.leggenda-ritratto .scatto-grana { border-radius: 18px; }
 .leggenda-fermo { position: absolute; right: -26px; bottom: -28px; width: 50%; aspect-ratio: 1; object-fit: cover; background: #d7d4cd; border: 6px solid #f2f0eb; border-radius: 13px; box-shadow: 0 18px 34px -20px rgba(28, 22, 14, .95); transform: rotate(3deg); }
 .leggenda-copy h1 { font-family: var(--font-display); font-size: clamp(46px, 5.6vw, 82px); font-weight: 700; line-height: .95; letter-spacing: -.03em; text-transform: uppercase; margin: 12px 0 18px; }
 .leggenda-claim { font-style: italic; font-size: 19px; line-height: 1.5; color: #8b433d; margin-bottom: 24px; max-width: 34ch; }

@@ -5,8 +5,10 @@ export type Leggenda = {
   numero: string
   ritratto: string
   fermo: string
-  /** Filmato di sfondo in loop. Se manca, resta il ritratto in carrellata. */
+  /** Clip nitida: polaroid e miniatura nel dettaglio capo. */
   video?: string
+  /** Stessa clip, sfocata e piu' leggera, per lo sfondo della pagina. */
+  videoSfondo?: string
   claim: string
   occhiello: string
   titolo: string
@@ -26,6 +28,7 @@ export const leggende: Leggenda[] = [
     ritratto: '/images/leggende/ronaldinho.jpg',
     fermo: '/images/leggende/ronaldinho-fermo.jpg',
     video: '/videos/ronaldinho.webp',
+    videoSfondo: '/videos/ronaldinho-sfondo.webp',
     claim: 'Se non ti diverti, hai già perso.',
     occhiello: 'Scegli il suo stile',
     titolo: 'Vestirsi come si gioca a piedi nudi',
@@ -51,6 +54,7 @@ export const leggende: Leggenda[] = [
     ritratto: '/images/leggende/cristiano.jpg',
     fermo: '/images/leggende/cristiano-fermo.jpg',
     video: '/videos/cristiano.webp',
+    videoSfondo: '/videos/cristiano-sfondo.webp',
     claim: 'Nessuno si è mai svegliato leggenda per caso.',
     occhiello: 'Scegli il suo stile',
     titolo: 'Arrivare sempre vestito come se contasse',
@@ -76,6 +80,7 @@ export const leggende: Leggenda[] = [
     ritratto: '/images/leggende/messi.jpg',
     fermo: '/images/leggende/messi-fermo.jpg',
     video: '/videos/messi.webp',
+    videoSfondo: '/videos/messi-sfondo.webp',
     claim: 'Parlare poco. Poi andarsene in porta.',
     occhiello: 'Scegli il suo stile',
     titolo: 'Il contrario di mettersi in mostra',
