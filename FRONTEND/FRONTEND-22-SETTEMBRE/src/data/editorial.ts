@@ -1,5 +1,5 @@
 import type { Category, ProductInput, ProductCategory } from '../lib/types'
-export const categories: Category[] = ['Tutti', 'Denim', 'Pelle', 'Top & Camicie', 'Trackwear', 'Outerwear', 'Pantaloni', 'Scarpe', '⭐ SPECIAL EDITIONS']
+export const categories: Category[] = ['Tutti', 'Denim', 'Pelle', 'Top & Camicie', 'Trackwear', 'Outerwear', 'Pantaloni', 'Scarpe', 'SPECIAL EDITIONS']
 export const vintageTemplates: ProductInput[] = [
   { nome: "Biker Leather Jacket '03", prezzo: 189, prezzoAcquisto: 65, fornitore: 'Archivio Milano', pubblicato: true },
   { nome: 'Baggy Denim Off-White Y2K', prezzo: 89, prezzoAcquisto: 28, fornitore: 'Studio Vintage Torino', pubblicato: true },

@@ -140,8 +140,12 @@ test('layout desktop e mobile, immagini caricate e nessun overflow', async ({ pa
   page.on('pageerror', error => errors.push(error.message))
   await page.goto('/')
   await expect(page.locator('.product-card').first()).toBeVisible()
-  await expect(page.locator('.hero-image')).toHaveJSProperty('complete', true)
-  expect(await page.locator('.hero-image').evaluate((img: HTMLImageElement) => img.naturalWidth)).toBeGreaterThan(0)
+  const ritratti = page.locator('.carta-leggenda img')
+  await expect(ritratti).toHaveCount(3)
+  for (const ritratto of await ritratti.all()) {
+    await expect(ritratto).toHaveJSProperty('complete', true)
+    expect(await ritratto.evaluate((img: HTMLImageElement) => img.naturalWidth)).toBeGreaterThan(0)
+  }
   await page.screenshot({ path: 'artifacts/desktop.png', fullPage: true })
   await page.setViewportSize({ width: 390, height: 844 })
   await expect(page.getByRole('heading', { name: 'Y2K ATHLETIC & STREETWEAR ARCHIVE.' })).toBeVisible()

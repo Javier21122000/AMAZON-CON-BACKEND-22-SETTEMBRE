@@ -105,13 +105,15 @@ h1, h2, h3, p { margin: 0; }
 .editorial-section { padding: 25px 0 65px; }
 .section-description { font-size: 11px; line-height: 1.7; color: #706d66; }
 .editorial-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-.editorial-card { height: 475px; border-radius: 22px; overflow: hidden; position: relative; background: #4e4f4c; color: white; }
+.editorial-card { border-radius: 22px; overflow: hidden; position: relative; background: #4e4f4c; color: white; }
 .editorial-card::after { content: ''; position: absolute; inset: 0; background: linear-gradient(0deg,#000a,transparent 80%); }
 .editorial-card img { width: 100%; height: 100%; position: absolute; object-fit: cover; transition: transform .6s; }
-.editorial-athletic img { width: 200%; max-width: none; object-position: center; transform: translateX(-36%); }
-.editorial-street img { width: 220%; max-width: none; transform: translateX(-51%); }
-.editorial-athletic:hover img { transform: translateX(-36%) scale(1.025); }
-.editorial-street:hover img { transform: translateX(-51%) scale(1.025); }
+/* Le due card montavano width 200%/220% con uno scorrimento laterale: servivano a
+   inquadrare un modello preciso dentro la vecchia campagna panoramica. Con le
+   fotografie verticali del diario raddoppiavano l'immagine e tagliavano le teste. */
+.editorial-athletic img { object-position: center 46%; }
+.editorial-street img { object-position: center 38%; }
+.editorial-card:hover img { transform: scale(1.03); }
 .editorial-card-top { position: absolute; top: 25px; left: 28px; right: 28px; display: flex; justify-content: space-between; align-items: center; z-index: 1; }
 .editorial-card-copy { position: absolute; bottom: 30px; left: 30px; z-index: 1; }
 .editorial-card-copy h3 { font-family: var(--font-display); font-size: 58px; line-height: .95; font-weight: 600; margin: 14px 0 24px; }
@@ -232,7 +234,15 @@ h1, h2, h3, p { margin: 0; }
 .star-empty { color: #a6a39a; }
 .review-count { color: #77746c; font-size: 11px; }
 .product-badges { max-width: calc(100% - 64px); align-items: flex-start; flex-direction: column; pointer-events: none; }
-.special-badge { background: #eee2b7; color: #51441c; padding: 5px 7px; border-radius: 4px; font-size: 8px; letter-spacing: .05em; }
+.product-card.special .product-image {
+  /* Fondo appena piu' caldo del neutro: il canale blu resta vicino a quello
+     delle card normali, cosi' mix-blend-multiply non ingiallisce il capo. */
+  background: linear-gradient(176deg, #f2ede3 0%, #e9e1d2 55%, #ded4c1 100%);
+  /* Bordo e ombra non passano dal multiply: distinguono la card senza toccare il capo. */
+  border: 1px solid rgba(158, 137, 95, .32);
+  box-shadow: 0 2px 4px -2px rgba(74, 60, 32, .14), 0 14px 30px -18px rgba(74, 60, 32, .38);
+}
+.product-special { font-style: italic; font-size: 11px; color: #8a7548; letter-spacing: .02em; }
 .quick-edit-button { position: absolute; right: 12px; bottom: 12px; display: flex; align-items: center; gap: 6px; border-radius: 30px; padding: 10px 13px; background: #171717; color: white; font-size: 12px; opacity: 0; transition: opacity .2s; }
 .product-card:hover .quick-edit-button, .product-card:focus-within .quick-edit-button { opacity: 1; }
 .category-tabs { min-width: 0; flex-wrap: wrap; overflow: visible; }
@@ -252,6 +262,232 @@ h1, h2, h3, p { margin: 0; }
   .review-count { font-size: 10px; }
   .product-card-image { padding: 12px; }
   .product-badges { top: 8px; left: 8px; gap: 4px; }
-  .feature-badge, .special-badge { font-size: 6px; padding: 4px; }
+  .feature-badge { font-size: 6px; padding: 4px; }
+  .product-special { font-size: 9px; }
   .product-number { display: none; }
+}
+
+/* ---- Il diario: fotografie d'epoca con didascalie ---- */
+.signature { font-family: 'Caveat', cursive; font-size: 27px; line-height: 1; color: #8b433d; display: inline-block; transform: rotate(-2.4deg); margin-top: 4px; }
+.signature-grande { font-size: 40px; margin-top: 18px; transform: rotate(-1.6deg); }
+
+.album { padding: 86px 0 30px; }
+.album .section-heading h2 em { font-style: italic; color: #6d6a63; }
+.album-griglia { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 38px 30px; }
+.scatto { margin: 0; }
+.scatto-media { position: relative; aspect-ratio: 4 / 5; overflow: hidden; border-radius: 15px; background: #d7d4cd; box-shadow: 0 18px 34px -24px rgba(32, 26, 18, .75); }
+.scatto-media img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .8s cubic-bezier(.22, 1, .36, 1); }
+.scatto:hover .scatto-media img { transform: scale(1.035); }
+/* Grana sopra la foto: la pellicola non era mai pulita. */
+.scatto-grana { position: absolute; inset: 0; pointer-events: none; opacity: .2; mix-blend-mode: overlay; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E"); }
+.scatto figcaption { padding: 17px 2px 0; }
+.scatto-luogo { display: block; font-style: italic; font-size: 11px; letter-spacing: .06em; color: #85827a; }
+.scatto figcaption h3 { font-family: var(--font-display); font-size: 25px; font-weight: 600; letter-spacing: -.015em; line-height: 1.08; margin: 7px 0 9px; text-transform: uppercase; }
+.scatto figcaption p { font-size: 13px; line-height: 1.75; color: #57554f; }
+.album-tutto { margin-top: 42px; display: inline-flex; }
+
+/* Pagina editoriale: il diario diventa un racconto a piena pagina. */
+.album-full { padding-top: 20px; }
+.album-full .album-griglia { grid-template-columns: 1fr; gap: 78px; }
+.album-full .scatto { display: grid; grid-template-columns: minmax(0, .92fr) minmax(0, 1fr); gap: 46px; align-items: center; }
+.album-full .scatto:nth-child(even) .scatto-media { order: 2; }
+.album-full .scatto:nth-child(even) figcaption { order: 1; }
+.album-full .scatto-media { aspect-ratio: 3 / 4; }
+.album-full .scatto:nth-child(3n+2) .scatto-media { transform: rotate(-1.1deg); }
+.album-full .scatto:nth-child(3n) .scatto-media { transform: rotate(.9deg); }
+.album-full .scatto figcaption { padding: 0; }
+.album-full .scatto figcaption h3 { font-size: 42px; margin: 10px 0 15px; }
+.album-full .scatto figcaption p { font-size: 15px; line-height: 1.85; max-width: 46ch; }
+
+.album-manifesto { margin-top: 92px; padding: 58px 0 10px; border-top: 1px solid #d9d6cd; max-width: 62ch; }
+.album-manifesto h2 { font-family: var(--font-display); font-size: clamp(38px, 5vw, 62px); font-weight: 700; line-height: .98; letter-spacing: -.02em; text-transform: uppercase; margin: 14px 0 26px; }
+.album-manifesto p { font-size: 15px; line-height: 1.9; color: #4c4a45; margin-bottom: 17px; }
+.editorial-nota { font-size: 12px; line-height: 1.7; color: #85827a; font-style: italic; }
+
+@media (max-width: 1100px) {
+  .album-griglia { gap: 30px 20px; }
+  .scatto figcaption h3 { font-size: 21px; }
+  .album-full .scatto figcaption h3 { font-size: 34px; }
+}
+@media (max-width: 800px) {
+  .album { padding-top: 60px; }
+  .album-griglia { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .scatto:last-child { grid-column: 1 / -1; max-width: 62%; }
+  .album-full .album-griglia { grid-template-columns: 1fr; gap: 54px; }
+  .album-full .scatto { grid-template-columns: 1fr; gap: 22px; }
+  .album-full .scatto:nth-child(even) .scatto-media { order: 0; }
+  .album-full .scatto:nth-child(even) figcaption { order: 0; }
+  .album-full .scatto-media { transform: none !important; aspect-ratio: 4 / 5; }
+  .album-full .scatto figcaption h3 { font-size: 30px; }
+}
+@media (max-width: 520px) {
+  .album-griglia { grid-template-columns: 1fr; gap: 40px; }
+  .scatto:last-child { max-width: 100%; }
+  .signature { font-size: 24px; }
+  .signature-grande { font-size: 33px; }
+  .album-manifesto { margin-top: 60px; padding-top: 42px; }
+}
+
+/* ---- Fondo pagina: carta leggermente sporca, non piatta ---- */
+body {
+  background-color: #f2f0eb;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='linear' slope='.055'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23p)'/%3E%3C/svg%3E");
+  background-attachment: fixed;
+}
+
+/* ---- Il nastro: riferimenti visivi, nessuna storia ---- */
+.nastro { padding: 64px 0 8px; }
+.nastro-occhiello { display: block; color: #85827a; margin-bottom: 20px; }
+.nastro-pista { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 16px; align-items: start; }
+.tassello { margin: 0; }
+.tassello-media { position: relative; aspect-ratio: 3 / 4; overflow: hidden; border-radius: 11px; background: #d7d4cd; box-shadow: 0 12px 24px -20px rgba(32, 26, 18, .8); }
+.tassello-media img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .7s cubic-bezier(.22, 1, .36, 1); }
+.tassello:hover .tassello-media img { transform: scale(1.05); }
+.tassello figcaption { padding-top: 10px; font-style: italic; font-size: 11px; line-height: 1.5; color: #85827a; }
+.tassello:nth-child(2) { margin-top: 26px; }
+.tassello:nth-child(4) { margin-top: 14px; }
+
+/* ---- Scheda del capo nel dettaglio ---- */
+.product-descrizione { font-size: 14px; line-height: 1.8; color: #4c4a45; margin-bottom: 20px; max-width: 54ch; }
+.product-descrizione::first-letter { font-size: 15px; }
+
+@media (max-width: 800px) {
+  .nastro { padding-top: 48px; }
+  .nastro-pista { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+  .tassello:nth-child(n+4) { display: none; }
+}
+@media (max-width: 520px) {
+  .nastro-pista { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .tassello:nth-child(n+3) { display: none; }
+  .tassello:nth-child(2) { margin-top: 0; }
+  .product-descrizione { font-size: 13px; }
+}
+
+/* ---- Hero: la foto di Ronaldo e' orizzontale, va inquadrata sul soggetto ---- */
+.hero-image { object-position: 62% 32%; }
+
+/* ---- Card editoriali ----
+   Le fotografie sono verticali a figura intera. Dentro un riquadro orizzontale
+   restava visibile solo una fascia all'altezza del busto: teste e gambe tagliate.
+   Con un riquadro 4:5 il ritaglio scende da circa il 40% all'83% dell'originale,
+   quindi la figura si vede quasi tutta e l'effetto zoom sparisce. */
+/* height: auto annulla le altezze fisse delle media query piu' in alto,
+   che altrimenti vincerebbero sull'aspect-ratio sotto i 1100px. */
+.editorial-card { height: auto; aspect-ratio: 4 / 5; }
+
+@media (max-width: 800px) { .hero-image { object-position: 60% 30%; } }
+@media (max-width: 520px) { .editorial-card { aspect-ratio: 5 / 6; } .hero-image { object-position: 58% 28%; } }
+
+/* ================= MOVIMENTO =================
+   Solo transform e opacity, cosi' il compositor lavora sulla GPU e le
+   transizioni restano fluide anche sui pannelli ad alta frequenza. */
+.product-card-image, .scatto-media img, .tassello-media img, .carta-media > img {
+  transition: transform .62s cubic-bezier(.22, 1, .36, 1);
+  will-change: transform;
+}
+
+/* ================= INGRESSO: SCEGLI LA LEGGENDA ================= */
+.ingresso { padding: 18px 0 8px; }
+.ingresso-testa { max-width: 60ch; margin-bottom: 40px; }
+.ingresso-testa h1 { font-family: var(--font-display); font-size: clamp(52px, 7.4vw, 104px); font-weight: 700; line-height: .92; letter-spacing: -.03em; text-transform: uppercase; margin: 16px 0 20px; }
+.ingresso-testa h1 span { color: #85827a; }
+.ingresso-testa p { font-size: 14px; line-height: 1.75; color: #57554f; max-width: 46ch; }
+/* Le tre leggende come una mano di carte: perno sotto la carta, cosi' le
+   rotazioni disegnano un arco invece di far ballare i riquadri sul posto. */
+.ingresso-mazzo { display: flex; justify-content: center; align-items: flex-end; perspective: 1700px; padding: 22px 0 34px; }
+.carta-slot { flex: 0 0 clamp(228px, 23.5vw, 352px); }
+.carta-slot:nth-child(1) { z-index: 1; margin-right: -1.6%; }
+.carta-slot:nth-child(2) { z-index: 3; }
+.carta-slot:nth-child(3) { z-index: 2; margin-left: -1.6%; }
+
+.carta-leggenda { display: block; position: relative; border-radius: 20px; overflow: hidden; background: #4e4f4c; color: #fff; transform-origin: 50% 125%; will-change: transform; box-shadow: 0 26px 52px -30px rgba(24, 19, 12, .92); transition: transform .6s cubic-bezier(.22, 1, .36, 1), box-shadow .6s cubic-bezier(.22, 1, .36, 1); }
+.carta-slot:nth-child(1) .carta-leggenda { transform: rotate(-6deg) rotateY(12deg) translateY(26px); }
+.carta-slot:nth-child(2) .carta-leggenda { transform: rotate(0deg) translateY(-12px); }
+.carta-slot:nth-child(3) .carta-leggenda { transform: rotate(6deg) rotateY(-12deg) translateY(26px); }
+.carta-slot:hover, .carta-slot:focus-within { z-index: 6; }
+.carta-slot:hover .carta-leggenda, .carta-slot:focus-within .carta-leggenda {
+  transform: rotate(0deg) rotateY(0deg) translateY(-26px) scale(1.035);
+  box-shadow: 0 40px 70px -32px rgba(24, 19, 12, .95);
+}
+
+.carta-media { position: relative; aspect-ratio: 3 / 4; }
+.carta-media > img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.carta-leggenda:hover .carta-media > img { transform: scale(1.045); }
+.carta-media::after { content: ''; position: absolute; inset: 0; background: linear-gradient(0deg, #000d 4%, #0006 34%, transparent 66%); }
+.carta-numero { position: absolute; top: 14px; left: 20px; z-index: 1; font-family: var(--font-display); font-size: 44px; font-weight: 700; line-height: 1; color: #fff9; letter-spacing: -.04em; }
+.carta-testo { position: absolute; left: 0; right: 0; bottom: 0; z-index: 1; padding: 0 20px 22px; }
+.carta-soprannome { font-style: italic; font-size: 12px; color: #ffffffb8; }
+.carta-testo h2 { font-family: var(--font-display); font-size: 32px; font-weight: 600; line-height: 1.02; letter-spacing: -.02em; text-transform: uppercase; margin: 5px 0 9px; }
+.carta-testo p { font-size: 12.5px; line-height: 1.55; color: #ffffffd9; max-width: 30ch; }
+.carta-invito { display: inline-flex; align-items: center; gap: 7px; margin-top: 14px; font-size: 10.5px; font-weight: 600; letter-spacing: .07em; text-transform: uppercase; border-bottom: 1px solid #ffffff5c; padding-bottom: 4px; }
+
+/* ================= PAGINA DELLA LEGGENDA ================= */
+.leggenda { position: relative; z-index: 0; padding: 26px 0 40px; }
+/* Il filmato resta dentro la larghezza del contenuto: 100vw includerebbe la
+   barra di scorrimento e creerebbe overflow orizzontale. */
+.leggenda-sfondo { position: absolute; top: -26px; left: 0; right: 0; height: 660px; overflow: hidden; border-radius: 0 0 26px 26px; pointer-events: none; z-index: -1; }
+.leggenda-sfondo video, .leggenda-sfondo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.leggenda-sfondo-fermo { animation: carrellata 30s ease-in-out infinite alternate; will-change: transform; }
+@keyframes carrellata { from { transform: scale(1.06) translate3d(0, 0, 0); } to { transform: scale(1.17) translate3d(-1.6%, -2.2%, 0); } }
+.leggenda-sfondo video, .leggenda-sfondo img { filter: blur(2.5px) saturate(.88); transform: scale(1.06); }
+/* Il velo scala da leggero a pieno: in alto la clip si vede, piu' in basso
+   copre del tutto perche' li' ci sono i paragrafi. */
+.leggenda-sfondo-velo { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(242,240,235,.70) 0%, rgba(242,240,235,.90) 44%, rgba(242,240,235,1) 84%); }
+.leggenda-indietro { display: inline-flex; margin-bottom: 34px; }
+.leggenda-testa { display: grid; grid-template-columns: minmax(0, .82fr) minmax(0, 1fr); gap: 52px; align-items: start; margin-bottom: 64px; }
+.leggenda-ritratto { position: relative; border-radius: 18px; overflow: visible; }
+.leggenda-ritratto > img:first-child { width: 100%; display: block; border-radius: 18px; box-shadow: 0 24px 46px -30px rgba(28, 22, 14, .9); }
+.leggenda-ritratto .scatto-grana { border-radius: 18px; }
+.leggenda-fermo { position: absolute; right: -26px; bottom: -28px; width: 50%; aspect-ratio: 1; object-fit: cover; background: #d7d4cd; border: 6px solid #f2f0eb; border-radius: 13px; box-shadow: 0 18px 34px -20px rgba(28, 22, 14, .95); transform: rotate(3deg); }
+.leggenda-copy h1 { font-family: var(--font-display); font-size: clamp(46px, 5.6vw, 82px); font-weight: 700; line-height: .95; letter-spacing: -.03em; text-transform: uppercase; margin: 12px 0 18px; }
+.leggenda-claim { font-style: italic; font-size: 19px; line-height: 1.5; color: #8b433d; margin-bottom: 24px; max-width: 34ch; }
+.leggenda-copy p { font-size: 15px; line-height: 1.88; color: #4c4a45; margin-bottom: 15px; max-width: 54ch; }
+
+.leggenda-regole { border-top: 1px solid #d9d6cd; border-bottom: 1px solid #d9d6cd; padding: 32px 0; margin-bottom: 66px; }
+.leggenda-regole .eyebrow { display: inline-flex; align-items: center; gap: 7px; color: #85827a; }
+.leggenda-regole ol { display: grid; grid-template-columns: repeat(3, 1fr); gap: 26px; margin: 22px 0 0; padding: 0; list-style: none; counter-reset: regola; }
+.leggenda-regole li { counter-increment: regola; font-size: 15px; line-height: 1.65; color: #3d3b37; padding-left: 34px; position: relative; }
+.leggenda-regole li::before { content: '0' counter(regola); position: absolute; left: 0; top: 1px; font-family: var(--font-display); font-size: 17px; font-weight: 700; color: #b0aca2; }
+.leggenda-selezione h2 em { font-style: italic; color: #6d6a63; }
+
+.leggenda-altre { margin-top: 70px; padding-top: 34px; border-top: 1px solid #d9d6cd; }
+.leggenda-altre > .eyebrow { display: block; color: #85827a; margin-bottom: 16px; }
+.leggenda-altre > div { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.leggenda-altra { display: flex; align-items: center; gap: 15px; padding: 13px 17px 13px 13px; border: 1px solid #d9d6cd; border-radius: 15px; transition: background .2s; }
+.leggenda-altra:hover { background: #eae7e0; }
+.leggenda-altra img { width: 52px; height: 52px; border-radius: 10px; object-fit: cover; object-position: center 22%; }
+.leggenda-altra span { display: flex; flex-direction: column; gap: 3px; margin-right: auto; }
+.leggenda-altra strong { font-size: 14px; font-weight: 600; }
+.leggenda-altra small { font-style: italic; font-size: 11px; color: #85827a; }
+
+/* Rimando alla leggenda dentro il dettaglio del capo */
+.product-leggenda { display: flex; align-items: center; gap: 12px; padding: 11px 14px 11px 11px; margin-bottom: 20px; border: 1px solid #d9d6cd; border-radius: 13px; transition: background .2s; }
+.product-leggenda:hover { background: #eae7e0; }
+.product-leggenda img { width: 42px; height: 42px; border-radius: 9px; object-fit: cover; object-position: center 22%; }
+.product-leggenda span { display: flex; flex-direction: column; gap: 2px; margin-right: auto; }
+.product-leggenda small { font-style: italic; font-size: 11px; color: #85827a; }
+.product-leggenda strong { font-size: 14px; font-weight: 600; }
+
+@media (max-width: 1100px) {
+  .carta-testo h2 { font-size: 26px; }
+  .carta-testo { padding: 0 17px 19px; }
+  .leggenda-testa { gap: 34px; }
+}
+@media (max-width: 800px) {
+  .ingresso-mazzo { flex-direction: column; align-items: stretch; gap: 16px; padding-bottom: 8px; perspective: none; }
+  .carta-slot { flex: none; margin: 0 !important; }
+  .carta-slot .carta-leggenda { transform: none !important; }
+  .carta-slot:hover .carta-leggenda, .carta-slot:focus-within .carta-leggenda { transform: translateY(-6px) !important; }
+  .carta-media { aspect-ratio: 16 / 10; }
+  .carta-media > img { object-position: center 22%; }
+  .leggenda-testa { grid-template-columns: 1fr; gap: 40px; }
+  .leggenda-ritratto { max-width: 420px; }
+  .leggenda-regole ol { grid-template-columns: 1fr; gap: 16px; }
+  .leggenda-altre > div { grid-template-columns: 1fr; }
+}
+@media (max-width: 520px) {
+  .ingresso-testa { margin-bottom: 28px; }
+  .carta-media { aspect-ratio: 4 / 3; }
+  .leggenda-fermo { width: 44%; right: -12px; bottom: -16px; border-width: 5px; }
+  .leggenda-claim { font-size: 16px; }
 }

@@ -25,6 +25,15 @@ I 28 JPG in `FRONTEND/FRONTEND-22-SETTEMBRE/public/assets/products/` sono ritagl
 python3 scripts/crop_products.py '/percorso/primo.jpg' '/percorso/secondo.jpg'
 ```
 
+I ritagli vengono poi riscalati 4x per gli schermi ad alta densità, così il browser non deve
+stirarli da solo: i file su disco sono di circa 780 x 850 px. È solo un ricampionamento pulito
+(Lanczos, con attenuazione dei blocchi JPEG e maschera di contrasto); il dettaglio resta quello
+dei collage 1306 x 816 di partenza, non viene generato nulla.
+
+```sh
+python3 scripts/upscale_products.py 4
+```
+
 Le card sono cliccabili anche da tastiera, usano immagini contenute in un riquadro 4:5 e separano prezzo e recensioni dalla foto. Il pulsante Edit è disponibile agli admin su hover, focus da tastiera e touch; salva nome, prezzo e flag tramite PUT, mantenendo gli altri metadati. Le API verificano i ruoli sul server.
 
 ## Persistenza e migrazione locale

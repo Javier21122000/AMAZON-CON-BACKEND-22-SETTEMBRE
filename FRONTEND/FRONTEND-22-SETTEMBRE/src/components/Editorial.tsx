@@ -4,11 +4,53 @@ import { motion } from 'framer-motion'
 
 export function Editorial({ full = false }: { full?: boolean }) {
   return <section className={`editorial-section ${full ? 'editorial-full' : ''}`}>
-    <div className="section-heading"><div><span className="eyebrow">MORE THAN CLOTHES. A WHOLE ERA.</span><h2>NON È NOSTALGIA.<br />È ATTITUDINE.</h2></div><p className="section-description">Dai tunnel degli stadi alle strade di Manchester.<br />Lo stile non chiedeva il permesso. E non lo chiede oggi.</p></div>
-    <div className="editorial-grid"><Link to="/catalogo?categoria=Trackwear" className="editorial-card editorial-athletic"><img src="/images/archive-campaign.png" alt="Trackwear burgundy ispirato allo stile fuori dal campo dei primi anni 2000" loading="lazy" /><div className="editorial-card-top"><span className="eyebrow">01 / OFF THE PITCH</span><ArrowUpRight size={22} /></div><div className="editorial-card-copy"><span className="eyebrow">THE FOOTBALL CULTURE</span><h3>DAL CAMPO.<br />ALLA STRADA.</h3><span className="editorial-pill">Esplora il trackwear <ArrowUpRight size={14} /></span></div></Link><Link to="/catalogo?categoria=Pelle" className="editorial-card editorial-street"><img src="/images/archive-campaign.png" alt="Giacca biker nera e denim baggy, silhouette streetwear Y2K" loading="lazy" /><div className="editorial-card-top"><span className="eyebrow">02 / AFTER HOURS</span><ArrowUpRight size={22} /></div><div className="editorial-card-copy"><span className="eyebrow">NO DRESS CODE REQUIRED</span><h3>VOLUME ALTO.<br />REGOLE ZERO.</h3><span className="editorial-pill">Esplora la pelle <ArrowUpRight size={14} /></span></div></Link></div>
-    {full && <div className="editorial-story"><span className="eyebrow">ARCHIVIO 00 / MANIFESTO</span><h2>IL VINTAGE NON STA FERMO.</h2><p>Le zip delle track jacket. Il denim che cade largo sulle sneakers. La pelle vissuta che diventa una seconda pelle. ARCHIVIO 00 nasce da quel linguaggio: sport, strada e personalità.</p><p>Beckham fuori dal campo, l’energia di Balotelli, l’era Manchester di CR7. Sono riferimenti di stile, parte di una cultura che continua a muoversi. La nostra selezione ne riprende le proporzioni e l’attitudine, senza affiliazioni con gli atleti.</p><Link className="button button-dark" to="/catalogo">Trova la tua silhouette <ArrowUpRight size={18} /></Link></div>}
+    <div className="section-heading">
+      <div>
+        <span className="eyebrow">NON SOLO VESTITI. UN MODO DI STARE AL MONDO.</span>
+        <h2>NON È NOSTALGIA.<br /><em>È ATTITUDINE.</em></h2>
+      </div>
+      <p className="section-description">
+        Dai tunnel degli stadi alle strade bagnate di Manchester.<br />
+        <em>Nessuno chiedeva il permesso. Tantomeno lo chiedeva a noi.</em>
+      </p>
+    </div>
+    <div className="editorial-grid">
+      <Link to="/catalogo?categoria=Trackwear" className="editorial-card editorial-athletic">
+        <img src="/images/culture/campo-vuoto.jpg" alt="Due giocatori in tuta larga su un campo vuoto prima della partita" loading="lazy" />
+        <div className="editorial-card-top"><span className="eyebrow">01 / PRIMA DEL FISCHIO</span><ArrowUpRight size={22} /></div>
+        <div className="editorial-card-copy">
+          <span className="eyebrow">TRACKWEAR</span>
+          <h3>DAL CAMPO.<br />ALLA STRADA.</h3>
+          <span className="editorial-pill">Guarda le tute <ArrowUpRight size={14} /></span>
+        </div>
+      </Link>
+      <Link to="/catalogo?categoria=Denim" className="editorial-card editorial-street">
+        <img src="/images/culture/cr7-terminal.jpg" alt="Jeans a zampa larga e camicia stampata in aeroporto, stile primi anni 2000" loading="lazy" />
+        <div className="editorial-card-top"><span className="eyebrow">02 / IN TRANSITO</span><ArrowUpRight size={22} /></div>
+        <div className="editorial-card-copy">
+          <span className="eyebrow">DENIM</span>
+          <h3>ZAMPA LARGA.<br />PASSO LENTO.</h3>
+          <span className="editorial-pill">Guarda il denim <ArrowUpRight size={14} /></span>
+        </div>
+      </Link>
+    </div>
+    {full && <div className="editorial-story">
+      <span className="eyebrow">ARCHIVIO 00 / COME È NATO</span>
+      <h2>IL VINTAGE NON STA FERMO.</h2>
+      <p>Le zip delle track jacket tirate fino al mento. Il denim che cade largo e si consuma sulle sneakers. La pelle che dopo dieci anni smette di essere una giacca e diventa una seconda pelle. Siamo partiti da lì, da come si vestiva la gente quando nessuno la stava guardando.</p>
+      <p>Cerchiamo i capi uno alla volta, li controlliamo, li fotografiamo e li rimettiamo in giro. <em>Niente riproduzioni, niente «ispirato a».</em> Roba vera, con i segni addosso.</p>
+      <p className="editorial-nota">Le fotografie del diario ritraggono personaggi pubblici degli anni 2000 e servono a raccontare un’epoca. Non c’è nessun accordo, nessuna sponsorizzazione e nessun legame fra loro e questo negozio.</p>
+      <Link className="button button-dark" to="/catalogo">Vai a vedere i capi <ArrowUpRight size={18} /></Link>
+    </div>}
   </section>
 }
+
 export function Manifesto() {
-  return <motion.section initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="manifesto rounded-3xl"><span className="eyebrow">ARCHIVIO 00 — EST. NOW, ROOTED THEN.</span><Asterisk size={58} strokeWidth={1} /><h2>GOOD STYLE.<br /><span>SECOND LIFE.</span></h2><p>Non serve inventare un’altra epoca.<br />Basta dare una nuova vita a quella giusta.</p><Link to="/editoriale" className="underlined-link">Dentro la nostra cultura <ArrowUpRight size={17} /></Link></motion.section>
+  return <motion.section initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="manifesto rounded-3xl">
+    <span className="eyebrow">ARCHIVIO 00 — NATO ADESSO, CRESCIUTO ALLORA.</span>
+    <Asterisk size={58} strokeWidth={1} />
+    <h2>GOOD STYLE.<br /><span>SECOND LIFE.</span></h2>
+    <p>Non serve inventarsi un’altra epoca.<br /><em>Basta ridare vita a quella giusta.</em></p>
+    <Link to="/editoriale" className="underlined-link">Entra nel diario <ArrowUpRight size={17} /></Link>
+  </motion.section>
 }

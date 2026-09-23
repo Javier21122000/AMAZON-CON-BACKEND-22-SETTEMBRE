@@ -6,3 +6,6 @@ build/
 target/
 *.class
 *.log
+__pycache__/
+*.pyc
+.claude/

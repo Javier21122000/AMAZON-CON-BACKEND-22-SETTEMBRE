@@ -41,4 +41,4 @@ export interface ProductInput {
 }
 export interface Favorite { id: string; oggetto: Product; createdAt: string }
 export type ProductCategory = 'Pelle' | 'Denim' | 'Top & Camicie' | 'Trackwear' | 'Outerwear' | 'Pantaloni' | 'Scarpe'
-export type Category = 'Tutti' | ProductCategory | '⭐ SPECIAL EDITIONS'
+export type Category = 'Tutti' | ProductCategory | 'SPECIAL EDITIONS'

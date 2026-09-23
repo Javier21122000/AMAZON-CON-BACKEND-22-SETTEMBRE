@@ -14,9 +14,9 @@ test('catalogo: filtri, varianti, immagini isolate, recensioni e accessibilità 
   await page.goto('/catalogo')
   await expect(page.locator('.product-card')).toHaveCount(products.length)
   await expect(page.locator('.quick-edit-button')).toHaveCount(0)
-  for (const category of ['Top & Camicie', 'Scarpe', 'Pantaloni', '⭐ SPECIAL EDITIONS']) {
+  for (const category of ['Top & Camicie', 'Scarpe', 'Pantaloni', 'SPECIAL EDITIONS']) {
     await page.getByRole('button', { name: category, exact: true }).click()
-    const expected = products.filter((p: { categoria: string; isSpecialEdition: boolean }) => category === '⭐ SPECIAL EDITIONS' ? p.isSpecialEdition : p.categoria === category)
+    const expected = products.filter((p: { categoria: string; isSpecialEdition: boolean }) => category === 'SPECIAL EDITIONS' ? p.isSpecialEdition : p.categoria === category)
     await expect(page.locator('.product-card')).toHaveCount(expected.length)
     for (const card of await page.locator('.product-card').all()) {
       await expect(card.locator('.product-reviews')).toBeVisible()
@@ -63,10 +63,10 @@ test('login test admin, modifica PUT, metadati conservati, sessione Guest al rel
     await page.getByRole('switch', { name: 'Special Edition', exact: true }).click()
     await page.getByRole('button', { name: 'Salva modifiche', exact: true }).click()
     await expect(page.getByRole('dialog')).toHaveCount(0)
-    await page.getByRole('button', { name: '⭐ SPECIAL EDITIONS', exact: true }).click()
+    await page.getByRole('button', { name: 'SPECIAL EDITIONS', exact: true }).click()
     const edited = page.locator('.product-card').filter({ hasText: changedName })
     await expect(edited).toBeVisible()
-    await expect(edited.locator('.special-badge')).toBeVisible()
+    await expect(edited.locator('.product-special')).toBeVisible()
     await expect(edited.locator('.feature-badge')).toHaveCount(original.inEvidenza ? 0 : 1)
     const updated = await (await request.get(`${backend}/oggetti/${original.id}`)).json()
     expect(updated).toMatchObject({ prezzo: 399, isSpecialEdition: true, rating: original.rating, numeroRecensioni: original.numeroRecensioni, categoria: original.categoria, immagineUrl: original.immagineUrl })
@@ -86,11 +86,12 @@ test('login test admin, modifica PUT, metadati conservati, sessione Guest al rel
   }
 })
 
-test('catalogo desktop e mobile: tutte le immagini caricate, filtri e nessun overflow', async ({ page }) => {
+test('catalogo desktop e mobile: tutte le immagini caricate, filtri e nessun overflow', async ({ page, request }) => {
   const errors: string[] = []
   page.on('pageerror', error => errors.push(error.message))
+  const published = await (await request.get(`${backend}/oggetti`)).json()
   await page.goto('/catalogo')
-  await expect(page.locator('.product-card')).toHaveCount(28)
+  await expect(page.locator('.product-card')).toHaveCount(published.length)
   for (const img of await page.locator('.product-card img').all()) {
     await img.scrollIntoViewIfNeeded()
     await expect(img).toHaveJSProperty('complete', true)
