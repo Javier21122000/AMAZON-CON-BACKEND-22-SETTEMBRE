@@ -19,6 +19,9 @@ import java.util.List;
 @Component
 public class DataInitializer implements ApplicationRunner {
 
+    @org.springframework.beans.factory.annotation.Value("${app.seed-demo-users:true}")
+    private boolean seedDemoUsers;
+
     private final JdbcTemplate jdbc;
     private final OggettoRepository oggetti;
     private final UtenteRepository utenti;
@@ -37,7 +40,7 @@ public class DataInitializer implements ApplicationRunner {
     @Transactional
     public void run(ApplicationArguments args) {
         ensureRoles();
-        ensureUsers();
+        if (seedDemoUsers) ensureUsers();
         migrateVariantConstraint();
         seedCatalogo();
     }
