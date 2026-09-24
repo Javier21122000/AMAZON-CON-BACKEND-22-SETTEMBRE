@@ -3,8 +3,9 @@ import { useAuthStore } from '../stores/useAuthStore'
 import type { AuthResponse, Favorite, LoginRequest, Product, ProductInput, RegisterRequest, User } from './types'
 
 export const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL,
-  timeout: 12000,
+  baseURL: import.meta.env.VITE_API_BASE_URL || '/api',
+  // Free hosting can take nearly two minutes to wake Spring Boot.
+  timeout: 180000,
   headers: { 'Content-Type': 'application/json' },
 })
 api.interceptors.request.use((config) => {
@@ -20,7 +21,9 @@ api.interceptors.response.use((response) => response, (error: unknown) => {
 })
 export function errorMessage(error: unknown): string {
   if (axios.isAxiosError(error)) {
-    if (!error.response) return 'Il server non risponde. Verifica che Spring Boot sia attivo sulla porta 8080 e riprova.'
+    if (!error.response) return error.code === 'ECONNABORTED' || error.code === 'ETIMEDOUT'
+      ? 'Il servizio sta impiegando troppo tempo a rispondere. Riprova tra poco.'
+      : 'Connessione al servizio non riuscita. Controlla la connessione e riprova tra poco.'
     const status = error.response.status
     if (status === 401) return 'Sessione scaduta o credenziali non valide. Accedi di nuovo.'
     if (status === 403) return 'Accesso non consentito. Verifica le credenziali e il ruolo del tuo account.'

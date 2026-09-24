@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from 'react'
+import { useEffect, useState, type FormEvent } from 'react'
 import { ArrowUpRight, Eye, EyeOff, LoaderCircle } from 'lucide-react'
 import { authApi, errorMessage } from '../lib/api'
 import { useAuthStore } from '../stores/useAuthStore'
@@ -17,11 +17,18 @@ export function AuthModal({ mode }: { mode: AuthMode }) {
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState('')
   const register = mode === 'register'
+  const [slowRequest, setSlowRequest] = useState(false)
+
+  useEffect(() => {
+    if (!busy) return
+    const timer = window.setTimeout(() => setSlowRequest(true), 8000)
+    return () => window.clearTimeout(timer)
+  }, [busy])
 
   async function loginWithCredentials(nextEmail: string, nextPassword: string) {
     if (busy) return
     setEmail(nextEmail); setPassword(nextPassword)
-    setBusy(true); setError('')
+    setBusy(true); setSlowRequest(false); setError('')
     try {
       const session = await authApi.login({ email: nextEmail, password: nextPassword })
       useAuthStore.getState().setSession(session)
@@ -34,7 +41,7 @@ export function AuthModal({ mode }: { mode: AuthMode }) {
     event.preventDefault()
     const form = new FormData(event.currentTarget)
     if (register) {
-      setBusy(true); setError('')
+      setBusy(true); setSlowRequest(false); setError('')
       try {
         const session = await authApi.register({ email, password, username: String(form.get('username')).trim(), firstName: String(form.get('firstName')).trim(), lastName: String(form.get('lastName')).trim() })
         useAuthStore.getState().setSession(session)
@@ -54,8 +61,9 @@ export function AuthModal({ mode }: { mode: AuthMode }) {
       {register && <><div className="form-row"><label>Nome<input name="firstName" required maxLength={80} autoComplete="given-name" /></label><label>Cognome<input name="lastName" required maxLength={80} autoComplete="family-name" /></label></div><label>Username<input name="username" required maxLength={80} autoComplete="username" /></label></>}
       <label>Email<input name="email" type="email" required autoComplete="email" value={email} onChange={e => setEmail(e.target.value)} /></label>
       <label>Password<div className="password-field"><input name="password" type={visible ? 'text' : 'password'} minLength={register ? 8 : 1} maxLength={100} required autoComplete={register ? 'new-password' : 'current-password'} value={password} onChange={e => setPassword(e.target.value)} /><button type="button" aria-label={visible ? 'Nascondi password' : 'Mostra password'} onClick={() => setVisible(!visible)}>{visible ? <EyeOff size={18} /> : <Eye size={18} />}</button></div></label>
+      {busy && slowRequest && <p role="status" className="form-note">Il servizio si sta riattivando. Il primo accesso può richiedere fino a tre minuti: attendi senza inviare di nuovo.</p>}
       {error && <p role="alert" className="error-text">{error}</p>}
-      <button className="button button-dark w-full" disabled={busy}>{busy ? <LoaderCircle className="animate-spin" size={18} /> : <>{register ? 'Crea account' : 'Accedi'}<ArrowUpRight size={19} /></>}</button>
+      <button className="button button-dark w-full" disabled={busy}>{busy ? <><LoaderCircle className="animate-spin" size={18} /><span>Attendi…</span></> : <>{register ? 'Crea account' : 'Accedi'}<ArrowUpRight size={19} /></>}</button>
     </form>
     {!register && <div className="quick-auth-box"><span className="eyebrow">DEV / TEST LOGIN</span><p className="form-note">Esplora l’archivio con un profilo di prova.</p><div className="quick-auth-buttons"><button type="button" disabled={busy} onClick={() => { const credentials = testCredentials('user'); void loginWithCredentials(credentials.email, credentials.password) }}>LOGIN TEST UTENTE</button><button type="button" disabled={busy} onClick={() => { const credentials = testCredentials('admin'); void loginWithCredentials(credentials.email, credentials.password) }}>LOGIN TEST ADMIN</button></div></div>}
     <p className="auth-switch">{register ? 'Hai già un account?' : 'Prima volta qui?'} <button onClick={() => openAuth(register ? 'login' : 'register')}>{register ? 'Accedi' : 'Registrati'}</button></p>
